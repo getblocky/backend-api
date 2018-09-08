@@ -1,13 +1,17 @@
 {
   "name": "blocky-backend-api",
   "version": "1.0.0",
-  "description": "",
+  "description": "Blocky Backend API",
   "main": "server.js",
   "scripts": {
     "start": "node ./node_modules/nodemon/bin/nodemon.js server.js"
   },
-  "author": "",
-  "license": "ISC",
+  "licenses": [
+    {
+      "type": "Apache-2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0"
+    }
+  ],
   "dependencies": {
     "body-parser": "^1.18.3",
     "cors": "^2.8.4",
