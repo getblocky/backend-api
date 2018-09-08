@@ -10,7 +10,7 @@ var Script = require('../models/Script');
 /*
 POST /user/login
 GET /user/scripts: Get all scripts belonging to user
-GET /user/dashboards: Get all dashboards belonging to user
+GET /user/devices: Get all devices belonging to user
 */
 
 // Authenticate the user and get a JSON Web Token to include in the header of future requests.
@@ -77,7 +77,7 @@ router.get('/scripts', function (req, res) {
   })(req, res);
 });
 
-router.get('/dashboards', function (req, res) {
+router.get('/devices', function (req, res) {
   passport.authenticate('jwt', {
     session: false
   }, (err, user) => {
@@ -92,7 +92,18 @@ router.get('/dashboards', function (req, res) {
       if (err) {
         throw err;
       } else {
-        res.json(userData.profile.dashBoards);
+        var devices = [];
+        userData.profile.dashBoards.forEach(function (dashboard) {
+          dashboard.devices.forEach(function (device) {
+            devices.push({
+              id: dashboard.id + '-' + device.id,
+              name: dashboard.name + ' - ' + device.name,
+              token: device.token
+            });
+          });
+        });
+
+        res.json(devices);
       }
     });
   })(req, res);
