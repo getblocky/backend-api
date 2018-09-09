@@ -4,6 +4,8 @@ var logger = require('morgan');
 var bodyParser = require('body-parser');
 var debug = require('debug')('seagull');
 var passport = require('passport');
+var fs = require('fs');
+var https = require('https');
 
 var db = require('mongoose');
 var config = require('./config/');
@@ -11,6 +13,9 @@ var routes = require('./routes/');
 var cors = require('cors');
 
 var app = express();
+var privateKey  = fs.readFileSync(config.privateKeyPath, 'utf8');
+var certificate = fs.readFileSync(config.certificatePath, 'utf8');
+var credentials = {key: privateKey, cert: certificate};
 
 app.use(cors())
 app.use(logger('dev'));
@@ -79,13 +84,11 @@ process.on('uncaughtException', function (error) {
 app.use('/public', express.static(path.join(__dirname + '/public')));
 
 // Start the server
-app.set('port', process.env.PORT || 3000);
+var httpsServer = https.createServer(credentials, app);
 
-var server = app.listen(app.get('port'), function () {
-  console.log('Express server listening on port ' + server.address().port);
-});
+httpsServer.listen(8443);
 
-server.on('error', onError);
+httpsServer.on('error', onError);
 
 
 /**

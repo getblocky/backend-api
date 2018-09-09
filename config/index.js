@@ -8,5 +8,7 @@ module.exports = {
   jwt: {
     secret: 'jwt_secret' // Todo: Update secret to encrypt JSON Web Token
   },
-  dataFilePath: '/home/vanminh0910_gmail_com/blynk/data/'
+  dataFilePath: '/path/blynk/data/',
+  privateKeyPath: '/privkey.pem',
+  certificatePath: '/fullchain.crt'
 };
