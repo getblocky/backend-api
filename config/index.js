@@ -8,5 +8,5 @@ module.exports = {
   jwt: {
     secret: 'jwt_secret' // Todo: Update secret to encrypt JSON Web Token
   },
-  dataFilePath: 'E:/Dev/blocky/blynk-demo/data/'
+  dataFilePath: '/home/vanminh0910_gmail_com/blynk/data/'
 };
