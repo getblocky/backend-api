@@ -98,7 +98,8 @@ router.get('/devices', function (req, res) {
             devices.push({
               id: dashboard.id + '-' + device.id,
               name: dashboard.name + ' - ' + device.name,
-              token: device.token
+              token: device.token,
+              status: device.status == 'ONLINE' ? 1 : 0
             });
           });
         });
