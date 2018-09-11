@@ -10,5 +10,9 @@ module.exports = {
   },
   dataFilePath: '/path/blynk/data/',
   privateKeyPath: '/privkey.pem',
-  certificatePath: '/fullchain.crt'
+  certificatePath: '/fullchain.crt',
+  facebook: {
+    clientId: 'client_id',
+    clientSecret: 'client_secret',
+  }
 };

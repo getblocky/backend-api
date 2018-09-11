@@ -26,16 +26,15 @@ router.post('/login', (req, res) => {
         hashPassword = utils.createHash(req.body.password, req.body.email);
 
         if (hashPassword === userData.pass) {
-          var user = {
+          var data = {
             email: userData.email,
             name: userData.name
           }
-          var token = jwt.sign(user, config.jwt.secret, {
+          var token = jwt.sign(data, config.jwt.secret, {
             expiresIn: "2 days"
           });
           res.json({
-            token: token,
-            user: user
+            token: token
           });
         } else {
           res.status(401).json({
@@ -52,6 +51,29 @@ router.post('/login', (req, res) => {
     });
   }
 
+});
+
+router.post('/facebook/login', function (req, res) {
+  passport.authenticate('facebook-token', {
+    session: false
+  }, (err, user) => {
+    if (err || !user) {
+      return res.status(401).json({
+        status: 401,
+        error: 'Authentication failed'
+      });
+    }
+    var data = {
+      email: user.email,
+      name: user.name
+    }
+    var token = jwt.sign(data, config.jwt.secret, {
+      expiresIn: "2 days"
+    });
+    res.json({
+      token: token
+    });
+  })(req, res);
 });
 
 router.get('/scripts', function (req, res) {
