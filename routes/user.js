@@ -115,16 +115,18 @@ router.get('/devices', function (req, res) {
         throw err;
       } else {
         var devices = [];
-        userData.profile.dashBoards.forEach(function (dashboard) {
-          dashboard.devices.forEach(function (device) {
-            devices.push({
-              id: dashboard.id + '-' + device.id,
-              name: dashboard.name + ' - ' + device.name,
-              token: device.token,
-              status: device.status == 'ONLINE' ? 1 : 0
+        if (userData.hasOwnProperty('profile') && userData.profile.hasOwnProperty('dashBoards')) {
+          userData.profile.dashBoards.forEach(function (dashboard) {
+            dashboard.devices.forEach(function (device) {
+              devices.push({
+                id: dashboard.id + '-' + device.id,
+                name: dashboard.name + ' - ' + device.name,
+                token: device.token,
+                status: device.status == 'ONLINE' ? 1 : 0
+              });
             });
           });
-        });
+        }
 
         res.json(devices);
       }
