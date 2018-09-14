@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var passport = require('passport');
+var axios = require('axios');
 
 var Script = require('../models/Script');
 
@@ -152,6 +153,41 @@ router.delete('/:script_id', function (req, res) {
         });
       }
     });
+  })(req, res);
+});
+
+router.post('/ota', function (req, res) {
+  passport.authenticate('jwt', {
+    session: false
+  }, (err) => {
+    if (err) {
+      return res.status(400).json({
+        status: 400,
+        error: 'Something went wrong'
+      });
+    }
+
+    if (!req.body.url || !req.body.data) {
+      res.status(400).json({
+        status: 400,
+        error: 'Missing parameter'
+      });
+    } else {
+      axios.put(req.body.url, req.body.data, {
+          headers: {
+            'Content-Type': 'application/json',
+          }
+        })
+        .then(function () {
+          res.json();
+        })
+        .catch(function () {
+          res.status(400).json({
+            status: 400,
+            error: 'Something went wrong'
+          });
+        });
+    }
   })(req, res);
 });
 
